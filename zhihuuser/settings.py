@@ -16,6 +16,10 @@ NEWSPIDER_MODULE = 'zhihuuser.spiders'
 
 # CUSTOMIZATION
 TEST_LIMIT = 10
+# MONGODB_SERVER_IP  = '10.20.21.245'
+MONGODB_SERVER_IP  = 'localhost'
+MONGODB_DATABASE   = 'zhihu'
+MONGODB_COLLECTION = 'user_baisic_info'
 # END
 
 
@@ -72,7 +76,8 @@ DEFAULT_REQUEST_HEADERS = {
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
 #    'zhihuuser.pipelines.ZhihuuserPipeline': 300,
-   'zhihuuser.pipelines.customPipline' : 300
+   'zhihuuser.pipelines.mongodbPipeline' : 300,
+   'zhihuuser.pipelines.customPipline' : 500
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

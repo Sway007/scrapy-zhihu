@@ -8,6 +8,7 @@
 
 from scrapy.exporters import JsonItemExporter
 import json
+from pymongo import MongoClient
 
 class ZhihuuserPipeline(object):
     def __init__(self):
@@ -53,7 +54,7 @@ class customPipline(object):
             file.close()
 
     def process_item(self, item, spider):   
-        
+        # input('custom pipline!')
         user_name = item.get('name')
         if user_name not in self.users_to_exporter:
             data = dict(item)
@@ -61,4 +62,29 @@ class customPipline(object):
             json.dump(data, f, ensure_ascii=False, indent=4)
         return item
         
-    
+class mongodbPipeline(object):
+
+    def __init__(self, count, dbserver_ip, database, collection):
+        self.count = count
+        self.db_ip = dbserver_ip
+        self.database = database
+        self.collection = collection
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls( crawler.settings.get('TEST_LIMIT'), 
+            crawler.settings.get('MONGODB_SERVER_IP'),
+            crawler.settings.get('MONGODB_DATABASE'),
+            crawler.settings.get('MONGODB_COLLECTION'))
+
+    def open_spider(self, spider):
+        self.client = MongoClient(self.db_ip)
+        self.db = self.client[self.database]
+
+    def close_spider(self, spider):
+        self.client.close()
+
+    def process_item(self, item, spider):  
+        # input('mongodb pipline!') 
+        self.db[self.collection].update({'url_token': item['url_token']}, {'$set': dict(item)}, upsert=True)
+        return item
