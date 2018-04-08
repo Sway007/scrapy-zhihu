@@ -16,8 +16,8 @@ NEWSPIDER_MODULE = 'zhihuuser.spiders'
 
 # CUSTOMIZATION
 TEST_LIMIT = 10
-# MONGODB_SERVER_IP  = '10.20.21.245'
-MONGODB_SERVER_IP  = 'localhost'
+MONGODB_SERVER_IP  = '10.20.21.245'
+# MONGODB_SERVER_IP  = 'localhost'
 MONGODB_DATABASE   = 'zhihu'
 MONGODB_COLLECTION = 'user_baisic_info'
 # END
